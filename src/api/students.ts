@@ -44,12 +44,8 @@ mock.onGet('/students').reply((config) => {
   const limit: number = config.params.limit ? parseInt(config.params.limit.toString()) : 20;
   const skip: number = config.params.skip ? parseInt(config.params.skip.toString()) : 0;
 
-  console.log(config.params)
-
   const filteredStudents: Student[] = searchTerm
-    ? students.filter((student: Student) =>
-      student.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    ? students.filter((student: Student) => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
     : students;
 
   const totalRecords: number = filteredStudents.length;
