@@ -7,7 +7,7 @@ function App() {
   const dispatch = useDispatch<typeof store.dispatch>()
 
   const onClick = () => {
-    dispatch(fetchStudents())
+    dispatch(fetchStudents({searchTerm: 'student', limit: 10, skip: 5}))
   }
 
   return (

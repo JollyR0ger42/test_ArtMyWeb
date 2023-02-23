@@ -24,10 +24,13 @@ const studentsSlice = createSlice({
 
 export const { setUsers } = studentsSlice.actions
 
-export const fetchStudents = createAsyncThunk('fetchUsers', async (arg, { dispatch }) => {
-  const response = await api.get('/students')
-  dispatch(setUsers(response.data.students))
-})
+export const fetchStudents = createAsyncThunk(
+  'fetchUsers',
+  async (arg: any, { dispatch }) => {
+    const response = await api.get('/students', { params: arg })
+    dispatch(setUsers(response.data.students))
+  }
+)
 
 const store = configureStore({
   reducer: studentsSlice.reducer
