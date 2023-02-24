@@ -17,6 +17,9 @@ const studentsSlice = createSlice({
   reducers: {
     addStudents: (state, payload: PayloadAction<State>) => {
       Object.assign(state.students, [...state.students, ...payload.payload.students])
+    },
+    dropStudents: (state) => {
+      Object.assign(state.students, [])
     }
   }
 })
@@ -24,7 +27,7 @@ const studentsSlice = createSlice({
 export const { addStudents } = studentsSlice.actions
 
 export const fetchStudents = createAsyncThunk(
-  'fetchUsers',
+  'fetchStudents',
   async (params: FetchStudentsParams, { dispatch }) => {
     try {
       const response = await api.get('/students', { params: params })
