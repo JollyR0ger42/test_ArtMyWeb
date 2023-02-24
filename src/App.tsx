@@ -5,7 +5,6 @@ import StudentCard from './components/StudentCard';
 import SearchBar from './components/SearchBar';
 import PopupDialog from './components/PopupDialog';
 import {Student} from './types';
-import { Routes, Route } from 'react-router-dom';
 import Loader from './components/Loader'
 
 function App() {
