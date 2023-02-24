@@ -3,11 +3,13 @@ import api from '../api/students'
 import { Student, FetchStudentsParams } from '../types'
 
 export interface State {
-  students: Student[]
+  students: Student[],
+  searchTerm?: string,
 }
 
 const initialState: State = {
-  students: []
+  students: [],
+  searchTerm: '',
 }
 
 
@@ -15,23 +17,27 @@ const studentsSlice = createSlice({
   name: 'students',
   initialState,
   reducers: {
-    addStudents: (state, payload: PayloadAction<State>) => {
+    addStudents: (state, payload: PayloadAction<{ students: Student[] }>) => {
       Object.assign(state.students, [...state.students, ...payload.payload.students])
     },
     dropStudents: (state) => {
-      Object.assign(state.students, [])
+      state.students = []
+    },
+    setSearch: (state, payload: PayloadAction<{ searchTerm: string }>) => {
+      state.searchTerm = payload.payload.searchTerm
     }
   }
 })
 
-export const { addStudents } = studentsSlice.actions
+export const { addStudents, dropStudents, setSearch } = studentsSlice.actions
 
 export const fetchStudents = createAsyncThunk(
   'fetchStudents',
-  async (params: FetchStudentsParams, { dispatch }) => {
+  async (params: FetchStudentsParams, thunkAPI) => {
     try {
-      const response = await api.get('/students', { params: params })
-      dispatch(addStudents({students: response.data.students}))
+      const searchTerm = (thunkAPI.getState() as State).searchTerm
+      const response = await api.get('/students', { params: { ...params, searchTerm } })
+      thunkAPI.dispatch(addStudents({ students: response.data.students }))
     } catch (e) {
       console.error(e)
     }

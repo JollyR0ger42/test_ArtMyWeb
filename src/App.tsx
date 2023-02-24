@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
-import store, {fetchStudents, State, AppDispatch } from './store/store';
+import store, {fetchStudents, State, AppDispatch, dropStudents, setSearch} from './store/store';
 import { useSelector, useDispatch } from 'react-redux';
 import StudentCard from './components/StudentCard'
 import SearchBar from './components/SearchBar'
 
 function App() {
-  const students = useSelector((state: State) => state.students)
+  const students = useSelector((state: State) => state.students);
+  const search = useSelector((state: State) => state.searchTerm);
   const dispatch = useDispatch<AppDispatch>();
 
   const fetchNext = (limit: number) => {
@@ -26,8 +27,12 @@ function App() {
     }
   }, [])
 
-  const onSearch = (payload: any) => {
-    console.log('onSearch', payload);
+  const onSearch = (payload: string) => {
+    if (payload !== search) {
+      dispatch(dropStudents());
+      dispatch(setSearch({searchTerm: payload}));
+      fetchNext(20);
+    }
   }
 
   return (
