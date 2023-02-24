@@ -4,12 +4,14 @@ import { Student, FetchStudentsParams } from '../types'
 
 export interface State {
   students: Student[],
-  searchTerm?: string,
+  searchTerm: string,
+  loading: boolean,
 }
 
 const initialState: State = {
   students: [],
   searchTerm: '',
+  loading: false,
 }
 
 
@@ -25,18 +27,25 @@ const studentsSlice = createSlice({
     },
     setSearch: (state, payload: PayloadAction<{ searchTerm: string }>) => {
       state.searchTerm = payload.payload.searchTerm
+    },
+    setLoading: (state, payload: PayloadAction<{ loading: boolean }>) => {
+      state.loading = payload.payload.loading
     }
   }
 })
 
-export const { addStudents, dropStudents, setSearch } = studentsSlice.actions
+export const { addStudents, dropStudents, setSearch, setLoading } = studentsSlice.actions
 
 export const fetchStudents = createAsyncThunk(
   'fetchStudents',
   async (params: FetchStudentsParams, thunkAPI) => {
+    const state = thunkAPI.getState() as State
+    if (state.loading) return
     try {
-      const searchTerm = (thunkAPI.getState() as State).searchTerm
+      const searchTerm = state.searchTerm
+      thunkAPI.dispatch(setLoading({ loading: true }))
       const response = await api.get('/students', { params: { ...params, searchTerm } })
+      thunkAPI.dispatch(setLoading({ loading: false }))
       thunkAPI.dispatch(addStudents({ students: response.data.students }))
     } catch (e) {
       console.error(e)
