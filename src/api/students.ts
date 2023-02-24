@@ -27,7 +27,7 @@ function generateStudents(amount: number): Student[] {
 }
 
 // mock the GET request to /students with query parameters
-mock.onGet('/students').reply((config) => {
+mock.onGet('/students').reply(async (config) => {
   const students = generateStudents(1000)
   const searchTerm: string | undefined = config.params?.searchTerm?.toString();
   const limit: number = config.params?.limit ? parseInt(config.params?.limit.toString()) : 20;
@@ -41,6 +41,9 @@ mock.onGet('/students').reply((config) => {
   const totalRecords: number = filteredStudents.length;
 
   const pagedStudents: Student[] = filteredStudents.slice(skip, skip + limit);
+
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  await delay(5000);
 
   return [
     200, { "totalRecords": totalRecords, "students": pagedStudents }
