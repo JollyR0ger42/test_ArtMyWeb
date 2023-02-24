@@ -13,11 +13,12 @@ const rootClass = {
 
 interface Props {
   student: Student;
+  onClick: Function
 }
 
-const StudentCard: React.FC<Props> = ({ student }) => {
+const StudentCard: React.FC<Props> = ({ student, onClick }) => {
   return (
-    <div style={rootClass}>
+    <div onClick={() => onClick()} style={rootClass}>
       <h2>{student.name}</h2>
       <img style={avaClass} src={student.avatarURL} alt={student.name} />
       <p>
