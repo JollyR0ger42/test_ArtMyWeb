@@ -1,24 +1,29 @@
 import React, {useEffect} from 'react';
-import store, {fetchStudents} from './store/store';
+import store, {fetchStudents, State, AppDispatch } from './store/store';
 import { useSelector, useDispatch } from 'react-redux';
 import StudentCard from './components/StudentCard'
 
 function App() {
-  const students = useSelector((state: any) => state.students)
-  const dispatch = useDispatch<typeof store.dispatch>()
+  const students = useSelector((state: State) => state.students)
+  const dispatch = useDispatch<AppDispatch>()
+
+  const fetchNext = (limit: number) => {
+    dispatch(fetchStudents({limit, skip: store.getState()?.students.length}))
+  }
 
   useEffect(() => {
     fetchNext(20)
-    window.addEventListener('scroll', function() {
+    const handleScroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         fetchNext(20)
       }
-   });
-  }, [])
+    }
+    window.addEventListener('scroll', handleScroll);
 
-  const fetchNext = (limit) => {
-    dispatch(fetchStudents({limit, skip: store.getState()?.students.length}))
-  }
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <div className="App">

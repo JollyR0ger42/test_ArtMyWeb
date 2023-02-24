@@ -9,3 +9,9 @@ export interface Student {
     marksObtained: number;
   }>;
 }
+
+export interface FetchStudentsParams {
+  searchTerm?: string,
+  limit?: number,
+  skip?: number
+}
