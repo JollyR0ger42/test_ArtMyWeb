@@ -43,7 +43,7 @@ mock.onGet('/students').reply(async (config) => {
   const pagedStudents: Student[] = filteredStudents.slice(skip, skip + limit);
 
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-  await delay(5000);
+  await delay(1000);
 
   return [
     200, { "totalRecords": totalRecords, "students": pagedStudents }

@@ -6,11 +6,12 @@ import SearchBar from './components/SearchBar';
 import PopupDialog from './components/PopupDialog';
 import {Student} from './types';
 import { Routes, Route } from 'react-router-dom';
-import NotFoundPage from './components/NotFoundPage';
+import Loader from './components/Loader'
 
 function App() {
   const students = useSelector((state: State) => state.students);
   const search = useSelector((state: State) => state.searchTerm);
+  const loading = useSelector((state: State) => state.loading);
   const dispatch = useDispatch<AppDispatch>();
   const [showPopup, setShowPopup] = useState(false);
   const [activeStudent, setActiveStudent] = useState({});
@@ -48,23 +49,19 @@ function App() {
     setShowPopup(true)
   }
 
-  const LocalApp = () => {
-    return (
-      <div className="App">
-        <SearchBar onSearch={onSearch} />
-        <PopupDialog open={showPopup} student={activeStudent as Student} onClose={closePopup} />
-        {students.map((stud, idx) =>
-          <StudentCard onClick={() => selectStudent(idx)} key={idx} student={stud} />
-        )}
-      </div>
-    )
-  }
-
   return (
-    <Routes>
-      <Route path="/students" element={<LocalApp />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <div className="App">
+      <SearchBar onSearch={onSearch} />
+      <PopupDialog open={showPopup} student={activeStudent as Student} onClose={closePopup} />
+      {
+        !!search &&
+        <h1>Search: {search}</h1>
+      }
+      {students.map((stud, idx) =>
+        <StudentCard onClick={() => selectStudent(idx)} key={idx} student={stud} />
+      )}
+      {loading && <Loader  />}
+    </div>
   );
 }
 

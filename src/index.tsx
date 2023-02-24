@@ -4,7 +4,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NotFoundPage from './components/NotFoundPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,7 +14,10 @@ root.render(
   // <React.StrictMode>
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <Routes>
+        <Route path="/students" element={<App />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </BrowserRouter>
   </Provider>
   // </React.StrictMode>
