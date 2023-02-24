@@ -6,6 +6,7 @@ import store from './store/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFoundPage from './components/NotFoundPage';
+import './index.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -15,12 +15,16 @@ const SearchBar: React.FC<Props> = ({ onSearch }) => {
   };
 
   return (
-    <input
-      type="text"
-      placeholder="Search"
-      value={query}
-      onChange={handleChange}
-    />
+    <div className="relative text-gray-600">
+      <input
+        type="search"
+        name="search"
+        placeholder="Search"
+        value={query}
+        onChange={handleChange}
+        className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none w-72"
+      />
+    </div>
   );
 };
 
